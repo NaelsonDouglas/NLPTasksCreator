@@ -1,0 +1,81 @@
+Metadata-Version: 2.0
+Name: cherrypy-cors
+Version: 1.6
+Summary: CORS handling as a cherrypy tool.
+Home-page: https://github.com/yougov/cherrypy-cors
+Author: YouGov, Plc.
+Author-email: opensource@yougov.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=2.7
+Requires-Dist: cherrypy (>=3)
+Requires-Dist: httpagentparser (>=1.5)
+Provides-Extra: docs
+Requires-Dist: jaraco.packaging (>=3.2); extra == 'docs'
+Requires-Dist: rst.linker (>=1.9); extra == 'docs'
+Requires-Dist: sphinx; extra == 'docs'
+Provides-Extra: testing
+Requires-Dist: collective.checkdocs; extra == 'testing'
+Requires-Dist: pygments; extra == 'testing'
+Requires-Dist: pytest (>=2.8); extra == 'testing'
+Requires-Dist: pytest-sugar; extra == 'testing'
+
+.. image:: https://img.shields.io/pypi/v/cherrypy_cors.svg
+   :target: https://pypi.io/project/cherrypy_cors
+
+.. image:: https://img.shields.io/pypi/pyversions/cherrypy_cors.svg
+
+.. image:: https://img.shields.io/pypi/dm/cherrypy_cors.svg
+
+.. image:: https://img.shields.io/travis/yougov/cherrypy-cors/master.svg
+   :target: http://travis-ci.org/yougov/cherrypy-cors
+
+CORS support for CherryPy
+
+License
+=======
+
+License is indicated in the project metadata (typically one or more
+of the Trove classifiers). For more details, see `this explanation
+<https://github.com/jaraco/skeleton/issues/1>`_.
+
+In a nutshell
+=============
+
+In your application, either install the tool globally.
+
+.. code-block:: python
+
+    import cherrypy_cors
+    cherrypy_cors.install()
+
+Or add it to your application explicitly.
+
+.. code-block:: python
+
+    import cherrypy_cors
+    app = cherrypy.tree.mount(...)
+    app.toolboxes['cors'] = cherrypy_cors.tools
+
+Then, enable it in your cherrypy config. For example, to enable it for all
+static resources.
+
+.. code-block:: python
+
+    config = {
+        '/static': {
+            'tools.staticdir.on': True,
+            'cors.expose.on': True,
+        }
+    }
+
+See `simple-example
+<https://github.com/yougov/cherrypy-cors/blob/master/simple-example.py>`_
+for a runnable example.
+
+
