@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+  tasts-web:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    stdin_open: true
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    networks:
+      - tasks-network
+networks:
+  tasks-network:
+volumes:
+  postgres-data:
