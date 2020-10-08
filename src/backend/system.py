@@ -9,6 +9,7 @@ import json
 
 days = ['sunday', 'monday', 'tuesday' ,'wednesday', 'thursday', 'friday', 'saturday']
 recurrencies = ['on', 'on the next','next','on the following','this', 'on this']
+range_recurrencies = ['for the next', 'on the next','on the following',]
 
 class System:
         def __init__(self):
@@ -17,7 +18,13 @@ class System:
                 self.nlp = spacy.load('en_core_web_sm')
                 self.matcher = Matcher(self.nlp.vocab)
                 single_day_pattern = [{'LEMMA': {'IN':recurrencies}},{'LEMMA': {'IN':days},'TAG':'NN'}] #NN or NNP
+                next_n_days_pattern = [{'ORTH':'next'},{'POS':'NUM'},{'ORTH': 'days'}] #NN or NNP
+                tomorrow_pattern = [{'ORTH':'tomorrow'}]
+                in_n_days_pattern = [{'ORTH':'in'},{'POS':'NUM'},{'ORTH':'days'}]
                 self.matcher.add('single_day', None, single_day_pattern)
+                self.matcher.add('next_n_days', None, next_n_days_pattern)
+                self.matcher.add('tomorrow', None, tomorrow_pattern)
+                self.matcher.add('in_n_days', None, in_n_days_pattern)
                 self.generate_span_to_n_days('')
                 self.queued_rules = []
 
@@ -54,21 +61,52 @@ class System:
                 #         print(token.lemma_)
 
                 matches = self.matcher(doc)
+                for token in doc:
+                        print('Text: {}. Pos: {}, Lemma: {} '.format(token.text,token.pos_,token.lemma_))
                 for match_id, start, end in matches:
                         string_id = self.nlp.vocab.strings[match_id]
                         if string_id == 'single_day':
                                 self.single_day(text)
+                        elif string_id == 'next_n_days':
+                                self.next_n_days(text)
+                        elif string_id == 'tomorrow':
+                                self.tomorrow(text)
+                        elif string_id == 'in_n_days':
+                                self.in_n_days(text)
 
                         span = doc[start:end]
                         print('Result:=======================')
                         self.single_day(text)
                         print(string_id, start, end, span.text)
+        def in_n_days(self,text):
+                doc = self.nlp(text)
+                amount = 0
+                for token in doc:
+                        if token.pos_ == 'NUM':
+                                amount = int(token.text)
+                if self.entries[amount]['notes'] == None:
+                        self.entries[amount]['notes'] = [str(doc)+'---']
+                else:
+                        self.entries[amount]['notes'].append(str(doc)+'---')
+        def next_n_days(self,text):
+                doc = self.nlp(text)
+                amount = 0
+                for token in doc:
+                        if token.pos_ == 'NUM':
+                                amount = int(token.text)
+                for d in range(0,amount):
+                        if self.entries[d]['notes'] == None:
+                                self.entries[d]['notes'] = [str(doc)+'---']
+                        else:
+                                self.entries[d]['notes'].append(str(doc)+'---')
+        def tomorrow(self, text):
+                if self.entries[1]['notes'] == None:
+                        self.entries[1]['notes'] = [text+'---']
+                else:
+                        self.entries[1]['notes'].append(text+'---')
 
         def single_day(self,text):
                 doc = self.nlp(text)
-                print('------------------------')
-                print(text)
-                print('------------------------')
                 day_pivot = self.now
                 for token in doc:
                         print('token: '+token.text)
@@ -87,10 +125,10 @@ class System:
                                         print(day_pivot)
                                         print(day)
                                 if self.entries[days_diff]['notes'] == None:
-                                        self.entries[days_diff]['notes'] = [str(doc)+'\n']
+                                        self.entries[days_diff]['notes'] = [str(doc)+'---']
                                         return True
                                 else:
-                                        self.entries[days_diff]['notes'].append(str(doc)+'\n')
+                                        self.entries[days_diff]['notes'].append(str(doc)+'---')
                                         return True
                                 print('~~~~~~~~~~~~~~~')
                                 print(days_diff)
