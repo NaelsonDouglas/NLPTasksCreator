@@ -11,7 +11,6 @@ class Tweet extends React.Component {
           super(props);
           this.handleClick = this.handleClick.bind(this);
           this.listRef = React.createRef();
-          this.headerRef = React.createRef();
         }
 
         handleClick(){
@@ -31,8 +30,8 @@ class Tweet extends React.Component {
         render() {
           return (
                 <div>
+                        <Header ref={this.headerRef}></Header>
                         {/* <Button onClick={this.handleClick}>Search</Button> */}
-                        <TimeList ref={this.listRef}></TimeList>
                 </div>
           );
         }

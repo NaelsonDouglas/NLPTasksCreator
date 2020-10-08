@@ -1,12 +1,17 @@
 from datetime import datetime
 from datetime import timedelta
-from rules import ActivationRules
+from datetime import datetime
+from datetime import timedelta
+import spacy
+from spacy.matcher import Matcher
+import re
+import spacy
 
 class System:
         def __init__(self):
                 self.update_current_date()
                 self.entries = []
-                self.rules = ActivationRules()
+
 
         def update_current_date(self):
                 self.now = datetime.now().date()

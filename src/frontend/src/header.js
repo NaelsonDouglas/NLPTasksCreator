@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import 'antd/dist/antd.css';
 import axios from 'axios';
-import { PageHeader,Form, Button } from 'antd';
+import TimeList from './list'
+import { List,Form, Button } from 'antd';
 import { Input, Checkbox } from 'antd';
 const layout = {
   labelCol: {
@@ -29,33 +30,48 @@ const tailLayout = {
 
 
 
-
 class Header extends React.Component {
 
         constructor(props) {
           super(props);
-          this.state = { query:''};
+          this.state = { query:'',timeline: []};
           this.handleClick = this.handleClick.bind(this);
           this.query = React.createRef()
         }
         handleClick() {
           this.makeRequest()
-          this.refreshQuery()
+          this.render()
+          // this.refreshQuery()
+          //this.refreshList()
         }
 
-        refreshQuery(){
-          this.setState({query:this.query.current.state.value})
+        componentDidUpdate() {
+          // this.listRef.current.setState({timeline:this.listRef.current.state.timeline})
+          this.render()
         }
+
+
+        componentDidMount() {
+          axios.get(`http://127.0.0.1:8080?text=do%20something%20next%20monday`)
+            .then(
+              res => {
+                  this.setState({ timeline:res.data });
+            })
+        }
+
+        // refreshQuery(){
+        //   console.log(this.listRef)
+        //   this.setState({query:this.query.current.state.value})
+        // }
 
         makeRequest(){
           const q = {'params':{'text':this.query.current.state.value}}
           axios.get(`http://127.0.0.1:8080`,q)
             .then(res => {
-                  //const res = res.data;
+                  console.log(this.state.timeline)
                   this.setState({ timeline:res.data });
             })
-            console.log('this.state.timeline')
-            console.log(this.state.timeline)
+
         }
 
         render() {
@@ -89,6 +105,19 @@ class Header extends React.Component {
                                 </Button>
                               </Form.Item>
                             </Form>
+                            <List
+                              itemLayout="vertical"
+                              size="small"
+                              dataSource={this.state.timeline}
+                              renderItem={item => (
+                                <List.Item
+                                  key={item.date}
+
+                                >
+                                  {item.date}
+                                </List.Item>
+                              )}
+                            />
                 </div>
           );
         }

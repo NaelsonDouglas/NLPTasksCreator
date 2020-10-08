@@ -1,14 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { List, Space } from 'antd';
+import { List, Space, Button } from 'antd';
+import Header from './header'
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
-
-const IconText = ({ icon, text }) => (
-        <Space>
-          {React.createElement(icon)}
-          {text}
-        </Space>
-      );
 
 class TimeList extends React.Component {
         constructor(props) {
@@ -18,6 +12,10 @@ class TimeList extends React.Component {
 
         updateList(props) {
           this.setState({timeline:props.timeline});
+        }
+
+        componentDidUpdate() {
+          this.render()
         }
 
         componentDidMount() {
@@ -43,19 +41,20 @@ class TimeList extends React.Component {
         }
 
         render() {
-                return <List
-                itemLayout="vertical"
-                size="small"
-                dataSource={this.state.timeline}
-                renderItem={item => (
-                  <List.Item
-                    key={item.date}
-
-                  >
-                    {item.date}
-                  </List.Item>
-                )}
-              />
+                return <div>
+                  <List
+                        itemLayout="vertical"
+                        size="small"
+                        dataSource={this.state.timeline}
+                        renderItem={item => (
+                          <List.Item
+                            key={item.date}
+                                          >
+                            {item.date}
+                          </List.Item>
+                        )}
+               />
+              </div>
         }
 
 

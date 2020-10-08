@@ -12,7 +12,7 @@ class ActivationRules:
         def __init__(self):
                 self.nlp = spacy.load('en_core_web_sm')
                 self.matcher = Matcher(self.nlp.vocab)
-                single_day_pattern = [{'LEMMA': {'IN':recurrencies}},{'LEMMA': {'IN':days},'TAG':'NNP'}]
+                single_day_pattern = [{'LEMMA': {'IN':recurrencies}},{'LEMMA': {'IN':days},'TAG':'NN'}] #NN or NNP
                 self.matcher.add('single_day', None, single_day_pattern)
                 self.queued_rules = []
 
@@ -45,9 +45,14 @@ class ActivationRules:
                 matches = self.matcher(doc)
                 for match_id, start, end in matches:
                         string_id = self.nlp.vocab.strings[match_id]
+                        if string_id == 'single_day':
+                                print('single day!')
+
+
                         span = doc[start:end]
                         print('Result:=======================')
                         print(string_id, start, end, span.text)
+
 
 
 
