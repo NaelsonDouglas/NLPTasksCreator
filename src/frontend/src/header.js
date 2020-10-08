@@ -51,8 +51,16 @@ class Header extends React.Component {
         }
 
 
+        // componentDidMount() {
+        //   axios.get(`http://127.0.0.1:8080?text=do%20something%20next%20monday`)
+        //     .then(
+        //       res => {
+        //           this.setState({ timeline:res.data });
+        //     })
+        // }
+
         componentDidMount() {
-          axios.get(`http://127.0.0.1:8080?text=do%20something%20next%20monday`)
+          axios.get(`http://127.0.0.1:8080/get`)
             .then(
               res => {
                   this.setState({ timeline:res.data });
@@ -110,12 +118,18 @@ class Header extends React.Component {
                               size="small"
                               dataSource={this.state.timeline}
                               renderItem={item => (
-                                <List.Item
-                                  key={item.date}
-
-                                >
-                                  {item.date}
+                                <List.Item key={item.date}>
+                                  <div>
+                                    {item.date}
+                                  </div>
+                                  <div>
+                                    {item.day}
+                                  </div>
+                                  <div>
+                                    {item.notes}
+                                  </div>
                                 </List.Item>
+
                               )}
                             />
                 </div>

@@ -13,7 +13,12 @@ class Api:
         @cherrypy.expose
         @cherrypy.tools.json_out()
         def index(self, text):
-                return self.system.generate_span_to_n_days(50)
+                return self.system.generate_span_to_n_days(text,365)
+
+        @cherrypy.expose
+        @cherrypy.tools.json_out()
+        def get(self):
+                return self.system.get()
         #         return '''
         #     <html>
         #     <body>top</body>
