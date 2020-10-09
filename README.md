@@ -7,7 +7,7 @@ The system is docker-compose based
  * Then go to your browser and access 0.0.0.0:3000
  
  # Usage
- * The system atends to calls like 'do XXX on the next friday', 'on thursday, walk the dog', 'watch TV tomorrow moorning', 'for the next 10 days, sleep well'
+ * The system attends to calls like 'do XXX on the next friday', 'on thursday, walk the dog', 'watch TV tomorrow moorning', 'for the next 10 days, sleep well'
  
  # Patterns
  The system uses [rule-base-matching](https://spacy.io/usage/rule-based-matching#matcher)
