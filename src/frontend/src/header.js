@@ -60,7 +60,7 @@ class Header extends React.Component {
         // }
 
         componentDidMount() {
-          axios.get(`http://127.0.0.1:8080/get`)
+          axios.get(`http://183.120.120.1:8080/get`)
             .then(
               res => {
                   this.setState({ timeline:res.data });
@@ -74,7 +74,7 @@ class Header extends React.Component {
 
         makeRequest(){
           const q = {'params':{'text':this.query.current.state.value}}
-          axios.get(`http://127.0.0.1:8080`,q)
+          axios.get(`http://183.120.120.1:8080`,q)
             .then(res => {
                   console.log(this.state.timeline)
                   this.setState({ timeline:res.data });
@@ -95,7 +95,7 @@ class Header extends React.Component {
                               onFinishFailed={onFinishFailed}
                             >
                               <Form.Item
-                                label="Query"
+                                label="Text"
                                 name="query"
                                 rules={[
                                   {
@@ -126,7 +126,18 @@ class Header extends React.Component {
                                     {item.day}
                                   </div>
                                   <div>
-                                    {item.notes}
+                                              <List
+                                        itemLayout="horizontal"
+                                        size="small"
+                                        dataSource={item.notes}
+                                        renderItem={note => (
+                                          <List.Item key='a'>
+                                            <div>
+                                              {note}
+                                            </div>
+                                          </List.Item>
+                                        )}
+                                      ></List>
                                   </div>
                                 </List.Item>
 

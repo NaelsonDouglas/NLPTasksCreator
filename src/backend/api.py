@@ -13,7 +13,7 @@ class Api:
         @cherrypy.expose
         @cherrypy.tools.json_out()
         def index(self, text):
-                return self.system.generate_span_to_n_days(text,365)
+                return self.system.generate_span_to_n_days(text,30)
 
         @cherrypy.expose
         @cherrypy.tools.json_out()
@@ -32,12 +32,12 @@ class Api:
 
 configs = os.path.join(os.path.dirname(__file__), 'cherrypy.conf')
 if __name__ == '__main__':
-        #breakpoint()
         configs = {
-            '/': {
+                '/': {
                 'cors.expose.on': True,
-            },
+                },
         }
+        cherrypy.config.update({'server.socket_host': '0.0.0.0','server.socket_port': 2020})
         cherrypy.quickstart(Api(), config=configs)
 
 Api()

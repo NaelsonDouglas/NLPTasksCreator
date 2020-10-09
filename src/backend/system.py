@@ -9,7 +9,7 @@ import json
 
 days = ['sunday', 'monday', 'tuesday' ,'wednesday', 'thursday', 'friday', 'saturday']
 recurrencies = ['on', 'on the next','next','on the following','this', 'on this']
-range_recurrencies = ['for the next', 'on the next','on the following',]
+range_recurrencies = ['next','for the next', 'on the next','on the following',]
 
 class System:
         def __init__(self):
@@ -17,8 +17,8 @@ class System:
                 self.entries = []
                 self.nlp = spacy.load('en_core_web_sm')
                 self.matcher = Matcher(self.nlp.vocab)
-                single_day_pattern = [{'LEMMA': {'IN':recurrencies}},{'LEMMA': {'IN':days},'TAG':'NN'}] #NN or NNP
-                next_n_days_pattern = [{'ORTH':'next'},{'POS':'NUM'},{'ORTH': 'days'}] #NN or NNP
+                single_day_pattern = [{'ORTH': {'IN':recurrencies}},{'LEMMA': {'IN':days}}] #NN or NNP
+                next_n_days_pattern = [{'ORTH':{'IN':range_recurrencies}},{'POS':'NUM'},{'ORTH': 'days'}] #NN or NNP
                 tomorrow_pattern = [{'ORTH':'tomorrow'}]
                 in_n_days_pattern = [{'ORTH':'in'},{'POS':'NUM'},{'ORTH':'days'}]
                 self.matcher.add('single_day', None, single_day_pattern)
@@ -85,9 +85,9 @@ class System:
                         if token.pos_ == 'NUM':
                                 amount = int(token.text)
                 if self.entries[amount]['notes'] == None:
-                        self.entries[amount]['notes'] = [str(doc)+'---']
+                        self.entries[amount]['notes'] = [str(doc)]
                 else:
-                        self.entries[amount]['notes'].append(str(doc)+'---')
+                        self.entries[amount]['notes'].append(str(doc))
         def next_n_days(self,text):
                 doc = self.nlp(text)
                 amount = 0
@@ -96,14 +96,14 @@ class System:
                                 amount = int(token.text)
                 for d in range(0,amount):
                         if self.entries[d]['notes'] == None:
-                                self.entries[d]['notes'] = [str(doc)+'---']
+                                self.entries[d]['notes'] = [str(doc)]
                         else:
-                                self.entries[d]['notes'].append(str(doc)+'---')
+                                self.entries[d]['notes'].append(str(doc))
         def tomorrow(self, text):
                 if self.entries[1]['notes'] == None:
-                        self.entries[1]['notes'] = [text+'---']
+                        self.entries[1]['notes'] = [text]
                 else:
-                        self.entries[1]['notes'].append(text+'---')
+                        self.entries[1]['notes'].append(text)
 
         def single_day(self,text):
                 doc = self.nlp(text)
@@ -125,10 +125,10 @@ class System:
                                         print(day_pivot)
                                         print(day)
                                 if self.entries[days_diff]['notes'] == None:
-                                        self.entries[days_diff]['notes'] = [str(doc)+'---']
+                                        self.entries[days_diff]['notes'] = [str(doc)]
                                         return True
                                 else:
-                                        self.entries[days_diff]['notes'].append(str(doc)+'---')
+                                        self.entries[days_diff]['notes'].append(str(doc))
                                         return True
                                 print('~~~~~~~~~~~~~~~')
                                 print(days_diff)

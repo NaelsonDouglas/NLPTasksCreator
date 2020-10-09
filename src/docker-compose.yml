@@ -1,10 +1,4 @@
 version: '3.3'
-networks:
-  tasks_net:
-    driver: bridge
-    ipam:
-      config:
-      - subnet: 183.120.120.1/20
 services:
   tasks-web:
     build:
@@ -16,7 +10,7 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - tasks_net
+      - tasks
   tasks-back:
     build:
       context: ./backend/
@@ -25,10 +19,12 @@ services:
     volumes:
       - ./backend:/app
     ports:
-      - "8080:8080"
+      - "2020:2020"
     networks:
-      tasks_net:
+      tasks:
 networks:
-  tasks_net:
-volumes:
-  postgres-data:
+  tasks:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 183.120.120.1/10
