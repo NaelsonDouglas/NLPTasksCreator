@@ -1,6 +1,12 @@
 version: '3.3'
+networks:
+  tasks_net:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 183.120.120.1/20
 services:
-  tasts-web:
+  tasks-web:
     build:
       context: ./frontend/
       dockerfile: Dockerfile
@@ -10,8 +16,19 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - tasks-network
+      - tasks_net
+  tasks-back:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    stdin_open: true
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8080:8080"
+    networks:
+      tasks_net:
 networks:
-  tasks-network:
+  tasks_net:
 volumes:
   postgres-data:
