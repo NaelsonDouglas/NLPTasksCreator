@@ -52,7 +52,7 @@ class Header extends React.Component {
 
 
         // componentDidMount() {
-        //   axios.get(`http://127.0.0.1:8080?text=do%20something%20next%20monday`)
+        //   axios.get(`http://127.0.0.1:2020?text=do%20something%20next%20monday`)
         //     .then(
         //       res => {
         //           this.setState({ timeline:res.data });
@@ -60,7 +60,7 @@ class Header extends React.Component {
         // }
 
         componentDidMount() {
-          axios.get(`http://183.120.120.1:8080/get`)
+          axios.get(`http://172.28.2.3:2020/get`)
             .then(
               res => {
                   this.setState({ timeline:res.data });
@@ -74,7 +74,7 @@ class Header extends React.Component {
 
         makeRequest(){
           const q = {'params':{'text':this.query.current.state.value}}
-          axios.get(`http://183.120.120.1:8080`,q)
+          axios.get(`http://172.28.2.3:2020`,q)
             .then(res => {
                   console.log(this.state.timeline)
                   this.setState({ timeline:res.data });

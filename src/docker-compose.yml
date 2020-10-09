@@ -1,6 +1,6 @@
-version: '3.3'
+version: '3'
 services:
-  tasks-web:
+  tasksweb:
     build:
       context: ./frontend/
       dockerfile: Dockerfile
@@ -10,8 +10,9 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - tasks
-  tasks-back:
+      test:
+        ipv4_address: 172.28.2.1
+  tasksback:
     build:
       context: ./backend/
       dockerfile: Dockerfile
@@ -21,10 +22,11 @@ services:
     ports:
       - "2020:2020"
     networks:
-      tasks:
+      test:
+        ipv4_address: 172.28.2.3
 networks:
-  tasks:
-    driver: bridge
+  test:
     ipam:
+      driver: default
       config:
-      - subnet: 183.120.120.1/10
+        - subnet: 172.28.0.0/16
