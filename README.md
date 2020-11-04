@@ -1,3 +1,6 @@
+# Demonstrations
+You can check the recorded demonstrations on Youtube [here](https://www.youtube.com/watch?v=w8SETmbXA0k&ab_channel=NaelsonDouglas) and [here](https://www.youtube.com/watch?v=8wL9wOqs57A&ab_channel=NaelsonDouglas)
+
 # NLPTasksCreator
 Creates calendar tasks using Natural Language
 
